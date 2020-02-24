@@ -1,0 +1,26 @@
+dataset: 'mnist'
+image_size: 28
+n_channels: 1
+results_root: '../results/'
+logdir_tb: False
+logpath: '../logfile'
+train_path: ''
+test_path: ''
+recon_error: 'bernoulli'
+learning_rate: 0.0002
+beta: 0.25
+cache_dir: False
+#save_tensorboard: False
+save_checkpoints: False
+save_plots: False
+epochs: 100
+batch_size: 128
+train_size: 50000
+test_size: 10000
+n_units: 16
+AE:
+  K: [0]
+  D: [1]
+VQVAE:
+  D: [10]
+  K: [32]

@@ -1,0 +1,27 @@
+dataset: 'nsynth'
+image_size: 512
+n_channels: 1
+results_root: '../results/'
+logdir_tb: '../tensorboard_log/'
+logpath: '../logfile'
+train_path: '../data/my-keyboard-dataset/train'
+test_path: '../data/my-keyboard-dataset/test'
+recon_error: 'softmax-CE'
+learning_rate: 0.0002
+beta: 0.25
+cache_dir: '../cache/nsynth'
+#save_tensorboard: True
+save_checkpoints: True
+save_plots: True
+epochs: 246
+batch_size: 16
+train_size: 1193
+test_size: 307
+n_units: 256
+AE:
+  K: [0]
+  D: [1,2,3,4,5,6,7,8,9,10]
+VQVAE:
+  D: [10, 256]
+  K: [64,128,256,512,1024,2048]
+

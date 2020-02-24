@@ -1,0 +1,27 @@
+dataset: 'cifar10'
+image_size: 32
+n_channels: 3
+results_root: '../results/'
+logdir_tb: '../tensorboard_log/'
+logpath: '../logfile'
+train_path: '../data/cifar'
+test_path: '../data/cifar'
+recon_error: 'softmax-CE'
+learning_rate: 0.0002
+beta: 0.25
+cache_dir: '../cache/cifar10'
+#save_tensorboard: True
+save_checkpoints: True
+save_plots: True
+epochs: 246
+batch_size: 128
+train_size: 40000
+test_size: 10000
+n_units: 256
+AE:
+  K: [0]
+  D: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+VQVAE:
+  D: [10,11]
+  K: [32, 64, 128, 256, 512, 1024, 2048, 4096]
+  
