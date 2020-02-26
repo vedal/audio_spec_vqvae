@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 
-from src.input_pipeline_nsynth import input_fn
-from src.utils_sound import save_sound, spectrogram_to_waveform
+from input_pipeline_nsynth import input_fn
+from utils.utils_sound import save_sound, spectrogram_to_waveform
 
 verbose = False
-maxiter = 500
+maxiter_LBFGS = 500
 
 checkpoint_dir = '../results/2019-03-23-sound-latent-size-comparison/trained_further'
 #checkpoint_dir = '../results_stored/2019-03-23-sound-latent-size-comparison'
@@ -80,7 +80,7 @@ for sounddir in dirs:
         save_sound(output_path=output_path,
                    waveform=spectrogram_to_waveform(spec,
                                                     apply_l2_norm=True,
-                                                    maxiter=maxiter),
+                                                    maxiter=maxiter_LBFGS),
                    sample_rate=16000)
 
     del saver

@@ -9,8 +9,8 @@ import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 
-from src.input_pipeline_nsynth import input_fn
-from src.utils import count_files_in_folder
+from input_pipeline_nsynth import input_fn
+from utils.utils import count_files_in_folder
 
 print('starting script')
 last = time()
@@ -28,14 +28,14 @@ image_size, n_channels = (512, 1)
 test_path = '../data/nsynth-test-vocal/audio'
 cache_dir = False # '../cache'
 
-location = 'gcp'
+location = 'remote'
 if location == 'local':
     results_root = Path('../results_stored/')
     cache_dir = False
     test_size = min(6, count_files_in_folder(test_path))
     batch_size = min(test_size, 2)
 
-elif location == 'gcp':
+elif location == 'remote':
     results_root = Path('../results/')
     test_size = min(100000, count_files_in_folder(test_path))
     batch_size = min(test_size, 16)
@@ -44,7 +44,7 @@ else:
     print('wrong location name specified')
     exit(0)
 
-checkpoint_dir = results_root / '2019-02-25-keyboard'  #'2019-03-23-sound-latent-size-comparison'
+checkpoint_dir = results_root / '2019-02-25-keyboard' #'2019-03-23-sound-latent-size-comparison'
 output_dir = Path('script-load-model-run-testset-output')
 
 models_trained_on_upside_down_images = True
@@ -67,7 +67,7 @@ for checkpoint_path in Path(checkpoint_dir).rglob('*.meta'):
         continue
 
     i += 1
-    test_loss_for_this_model = []
+    testloss = []
 
     graph = tf.Graph()
     with graph.as_default():
@@ -109,24 +109,17 @@ for checkpoint_path in Path(checkpoint_dir).rglob('*.meta'):
 
                     error = session.run(sse, {x: data_norm})
 
-                    test_loss_for_this_model.append(error)
+                    testloss.append(error)
 
                     pbar.update(batch_size)
 
                 except tf.errors.OutOfRangeError:
                     break
 
-    test_loss_for_this_model = np.concatenate(test_loss_for_this_model)
+    testloss = np.concatenate(testloss)
 
-    date_time_hparams = checkpoint_path.parts[-3]
-    print(date_time_hparams)
-    print('test_loss_for_this_model', np.mean(test_loss_for_this_model))
+    timestamp_hparams_str = checkpoint_path.parts[-3]
+    print(timestamp_hparams_str)
+    print('mean_testloss', np.mean(testloss))
 
-    output_path = output_dir / date_time_hparams / dataset_name
-    '''
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    output_path = str(output_path)
-    np.save(output_path, test_loss_for_this_model)
-    print(output_path,'saved')
-    '''
+    output_path = output_dir / timestamp_hparams_str / dataset_name

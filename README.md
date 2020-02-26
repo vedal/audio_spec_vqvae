@@ -3,12 +3,10 @@ Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders
 
 master thesis project
 
-The work was published [here](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801)
-
-
-tested on Python 3.6.5
+The report can be found [here](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801)
 
 Requirements:
+- Python 3.6.5
 - `tensorflow==1.13.0rc2`
 - `dm-sonnet==1.27`
 - `tensorflow-probability==0.5.0`
