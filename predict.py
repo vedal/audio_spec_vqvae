@@ -1,6 +1,3 @@
-# Description
-# This script predicts (compress and reconstruct) a new sound clip
-
 import traceback
 from pathlib import Path
 
@@ -11,79 +8,119 @@ import tensorflow as tf
 from input_pipeline_nsynth import input_fn
 from utils.utils_sound import save_sound, spectrogram_to_waveform
 
-verbose = False
-maxiter_LBFGS = 500
+if __name__ == '__main__':
+    parser = ArgumentParser(
+        description="predicts (compress and reconstruct) a new sound clip using a pretrained model",
+        formatter_class=ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "--checkpoint_dir",
+        dest="checkpoint_dir",
+        choices=[
+            "../results/2019-03-23-sound-latent-size-comparison/trained_further",
+            "../results_stored/2019-03-23-sound-latent-size-comparison",
+            "../results_stored/2019-02-25-keyboard",
+        ],
+        help="model checkpoint directory",
+        type=Path,
+        required=True,
+    )
 
-checkpoint_dir = '../results/2019-03-23-sound-latent-size-comparison/trained_further'
-#checkpoint_dir = '../results_stored/2019-03-23-sound-latent-size-comparison'
-#checkpoint_dir = '../results_stored/2019-02-25-keyboard'
+    parser.add_argument(
+        "--maxiter",
+        dest="maxiter",
+        help="maximum L-BFGS-B iterations to reconstruct the audio sample",
+        default=500,
+        required=True,
+        type=int,
+    )
 
-output_dir = 'compress_reconstruct_sonify'
+    parser.add_argument(
+        "--data_dir",
+        dest="data_dir",
+        default="../data/test-sounds-for-network/normalized",
+        help="input data directory",
+        type=Path,
+        required=True,
+    )
 
-input_path = '../data/test-sounds-for-network/normalized'
-p = Path(input_path).glob('*')
-dirs = [str(x) for x in p if x.is_dir()]
+    parser.add_argument(
+        "--output_dir",
+        dest="output_dir",
+        default="compress_reconstruct_sonify",
+        help="output directory",
+        type=Path,
+        required=True,
+    )
 
-for sounddir in dirs:
+    parser.add_argument("--verbose", help="increase output verbosity", action="store_true")
 
-    with tf.Session(graph=tf.Graph()) as session:
-        dataset = input_fn(sounddir,
-                           is_training=False,
-                        data_size=2,
-                           batch_size=1)
-        next_element = dataset.make_one_shot_iterator().get_next()
-        data_norm = session.run(next_element)['images']
+    args = parser.parse_args()
 
-        graph_ops = [op.name for op in session.graph.get_operations()]
+    verbose = args.verbose
+    maxiter_LBFGS = args.maxiter
 
-    specs = {'original': np.squeeze(data_norm)}
+    dirs = [x for x in args.data_dir.glob("*") if x.is_dir()]
 
-    data_norm = np.flipud(data_norm[0, ..., 0])[None, ..., None]
+    for sounddir in dirs:
 
-    #meta_models = glob.iglob(checkpoint_dir, recursive=True)
-    #for checkpoint_path in meta_models:#[[*meta_models][1]]:#meta_models:
-    i = 0
-    for checkpoint_path in Path(checkpoint_dir).rglob('*.meta'):
-        i += 1
-        checkpoint_path = str(checkpoint_path)
         with tf.Session(graph=tf.Graph()) as session:
-            saver = tf.train.import_meta_graph(checkpoint_path)
-            if not saver:
-                continue
-            saver.restore(session, checkpoint_path[:-5])
+            dataset = input_fn(str(sounddir), is_training=False, data_size=2, batch_size=1)
+            next_element = dataset.make_one_shot_iterator().get_next()
+            data_norm = session.run(next_element)["images"]
 
             graph_ops = [op.name for op in session.graph.get_operations()]
 
-            for scope in ['AE', 'VQVAE']:
-                try:
-                    spec = session.run(
-                        scope + '_1/dec/conv2d_transpose_1/BiasAdd:0',
-                        {'Placeholder:0': data_norm})
+        specs = {"original": np.squeeze(data_norm)}
 
-                    spec = np.squeeze(spec)
-                    spec = np.flipud(spec)
-                    spec = np.clip(spec, 0, 1)
-                    specs[scope] = spec
+        data_norm = np.flipud(data_norm[0, ..., 0])[None, ..., None]
 
-                    # get experiment filename with date,time,hyperparameters
-                    experiment_fingerprint = Path(checkpoint_path).parts[-3]
-
-                except Exception as e:
-                    if verbose: print(traceback.format_exc())
+        i = 0
+        for checkpoint_path in args.checkpoint_dir.rglob("*.meta"):
+            i += 1
+            checkpoint_path = str(checkpoint_path)
+            with tf.Session(graph=tf.Graph()) as session:
+                saver = tf.train.import_meta_graph(checkpoint_path)
+                if not saver:
                     continue
+                saver.restore(session, checkpoint_path[:-5])
 
-    for specname, spec in specs.items():
-        output_path = str(
-            Path(output_dir, experiment_fingerprint,
-                 Path(sounddir).stem)) + '_{}.wav'.format(specname)
+                graph_ops = [op.name for op in session.graph.get_operations()]
 
-        save_sound(output_path=output_path,
-                   waveform=spectrogram_to_waveform(spec,
-                                                    apply_l2_norm=True,
-                                                    maxiter=maxiter_LBFGS),
-                   sample_rate=16000)
+                for scope in ["AE", "VQVAE"]:
+                    try:
+                        spec = session.run(
+                            scope + "_1/dec/conv2d_transpose_1/BiasAdd:0",
+                            {"Placeholder:0": data_norm},
+                        )
 
-    del saver
+                        spec = np.squeeze(spec)
+                        spec = np.flipud(spec)
+                        spec = np.clip(spec, 0, 1)
+                        specs[scope] = spec
 
-    if i == 0:
-        print('no saved models in', checkpoint_dir)
+                        # get experiment filename with date,time,hyperparameters
+                        experiment_fingerprint = Path(checkpoint_path).parts[-3]
+
+                    except Exception as e:
+                        if verbose:
+                            print(traceback.format_exc())
+                        continue
+
+        for specname, spec in specs.items():
+            output_path = str(
+                Path(args.output_dir, experiment_fingerprint, sounddir.stem)
+            ) + "_{}.wav".format(specname)
+
+            save_sound(
+                output_path=output_path,
+                waveform=spectrogram_to_waveform(
+                    spectrogram=spec, apply_l2_norm=True, maxiter=maxiter_LBFGS
+                ),
+                sample_rate=16000,
+            )
+
+        del saver
+
+        if i == 0:
+            print("no saved models in", args.checkpoint_dir)
