@@ -33,12 +33,12 @@ An experiment setup YAML is required for `train.py`. The setup used in the repor
 `predict.py` compresses/reconstructs a new sound file.
 
 ### Dataset pipelines
-- `.wav` soundfiles, 4-seconds ([Nsynth](https://magenta.tensorflow.org/datasets/nsynth#files))
+- `.wav` soundfiles, 4-seconds (such as [Nsynth](https://magenta.tensorflow.org/datasets/nsynth#files))
 - CIFAR10
 - MNIST
 
 ### Results
-Validation error plots for autoencoders of increasing latent representation size, Nsynth dataset.
+Nsynth dataset validation error plots for autoencoders of increasing latent representation size.
 ![error-val-nsynth](images/error-val-nsynth.png)
 
 CIFAR10-dataset
