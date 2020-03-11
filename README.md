@@ -6,7 +6,7 @@
 ### Overview 
 Tensorflow implementation of Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders. Using this framework allows for compressing a short `.wav` sound file into a compact, discrete representation, and reconstruct it again. The method relies on an input pipeline which preprocesses the sound into an intermediate "spectrogram" representation, as well as an estimated inverse operation for post-processing.
 
-![error-freq-reponse](images/error-freq-response-AE-VQVAE.jpg)
+![error-freq-reponse](images/error-freq-response.jpg)
 
 ## Getting started
 ### Install dependencies
