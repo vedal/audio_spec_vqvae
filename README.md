@@ -1,10 +1,12 @@
-## Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders
+# Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders
 
 | [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) |
 
 
 ### Overview 
-Tensorflow implementation of Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders. Using this framework allows for compressing a short `.wav` sound file into a compact, discrete representation, and reconstruct it again. The method relies on an input pipeline which preprocesses the sound into an intermediate "spectrogram" representation, as well as an estimated inverse operation for post-processing.
+Tensorflow implementation of Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders, which compresses (encodes) a short sound files into a compact, discrete representation, and decompresses it to a waveform again. The method relies on an intermediate "spectrogram" representation. An gradient-based approximate inverse-STFT is included for generating a sound waveform from the reconstructed spectrogram.
+
+For additional details, please see the [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801).
 
 ![error-freq-reponse](images/error-freq-response.jpg)
 
@@ -30,16 +32,16 @@ An experiment setup YAML is required for `train.py`. The setup used in the repor
 ### Prediction
 `predict.py` compresses/reconstructs a new sound file.
 
-### Dataset pipelines:
+### Dataset pipelines
 - `.wav` soundfiles, 4-seconds ([Nsynth](https://magenta.tensorflow.org/datasets/nsynth#files))
 - CIFAR10
 - MNIST
 
-### Results (please refer to [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801)):
-Nsynth
+### Results
+Validation error plots for autoencoders of increasing latent representation size, Nsynth dataset.
 ![error-val-nsynth](images/error-val-nsynth.png)
 
-CIFAR10
+CIFAR10-dataset
 ![error-val-cifar10](images/error-val-cifar10.png)
 
 ### Citation
