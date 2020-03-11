@@ -1,12 +1,12 @@
 # Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders
 
-| [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) |
+| [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) | [sound samples](https://amundv.github.io/thesis-audio-samples/) |
 
 
 ### Overview 
 Tensorflow implementation of Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders, which compresses (encodes) a short sound files into a compact, discrete representation, and decompresses it to a waveform again. The method relies on an intermediate "spectrogram" representation. An gradient-based approximate inverse-STFT is included for generating a sound waveform from the reconstructed spectrogram.
 
-For additional details, please see the [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801).
+For additional details, please see the [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) and [sound samples](https://amundv.github.io/thesis-audio-samples/).
 
 ![error-freq-reponse](images/error-freq-response.jpg)
 
