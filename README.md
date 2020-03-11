@@ -1,9 +1,9 @@
 Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders
 =================================================
 
-master thesis project
+| [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) |
 
-The report can be found [here](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801)
+Tensorflow implementation of Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders. Using this framework allows for compressing a short `.wav` sound file into a compact, discrete representation, and reconstruct it again. The method relies on an input pipeline which preprocesses the sound into an intermediate "spectrogram" representation, as well as an estimated inverse operation for post-processing.
 
 Requirements:
 - Python 3.6.5
@@ -12,19 +12,24 @@ Requirements:
 - `tensorflow-probability==0.5.0`
 
 Datasets:
-- cifar10
+- `.wav` soundfiles, 4-seconds ([Nsynth](https://magenta.tensorflow.org/datasets/nsynth#files))
+- CIFAR10
+- MNIST
 
-OR
+`train.py` requires an experiment setup YAML, which can be found in `experiments/`. The `minimal` experiments used only a minimal subset of the data and are intended for debugging. 
 
-- dataset of 4-second sound files
-
-YAML-files describing each experiment type can be found in `experiments/`. The `minimal` experiments used only a minimal subset of the data and are intended for testing. 
-
-### Run cifar experiment (subset of data; for testing)
+### Run cifar experiment (subset of data)
 `python train.py -f experiments/cifar10-minimal.yaml`
 
 ### Run cifar experiment (whole dataset)
 `python train.py -f experiments/cifar10-full.yaml`
 
-### Run cifar experiment (whole dataset)
-`python train.py -f experiments/cifar10-full.yaml`
+`evaluate.py` runs the testset to evalute the predictive performance of a trained model.
+
+`predict.py` compresses/reconstructs a new sound file.
+
+
+![waveform-spectrogram](images/waveform-spectrogram.png)
+![error-freq-reponse](images/error-freq-response-AE-VQVAE.png)
+![error-val-nsynth](images/error-val-nsynth.png)
+![error-val-cifar10](images/error-val-cifar10.png)
