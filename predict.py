@@ -1,11 +1,11 @@
 import traceback
 from pathlib import Path
-
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-
 from input_pipeline_nsynth import input_fn
+
 from utils.utils_sound import save_sound, spectrogram_to_waveform
 
 if __name__ == '__main__':
@@ -16,14 +16,12 @@ if __name__ == '__main__':
     parser.add_argument(
         "--checkpoint_dir",
         dest="checkpoint_dir",
-        choices=[
-            "../results/2019-03-23-sound-latent-size-comparison/trained_further",
-            "../results_stored/2019-03-23-sound-latent-size-comparison",
-            "../results_stored/2019-02-25-keyboard",
-        ],
+        default="../results/2019-03-23-sound-latent-size-comparison/trained_further",
+        #default="../results/2019-03-23-sound-latent-size-comparison",
+        #default="../results/2019-02-25-keyboard",
         help="model checkpoint directory",
+        required=False,
         type=Path,
-        required=True,
     )
 
     parser.add_argument(
@@ -31,7 +29,7 @@ if __name__ == '__main__':
         dest="maxiter",
         help="maximum L-BFGS-B iterations to reconstruct the audio sample",
         default=500,
-        required=True,
+        required=False,
         type=int,
     )
 
@@ -40,8 +38,8 @@ if __name__ == '__main__':
         dest="data_dir",
         default="../data/test-sounds-for-network/normalized",
         help="input data directory",
+        required=False,
         type=Path,
-        required=True,
     )
 
     parser.add_argument(
@@ -50,7 +48,7 @@ if __name__ == '__main__':
         default="compress_reconstruct_sonify",
         help="output directory",
         type=Path,
-        required=True,
+        required=False,
     )
 
     parser.add_argument("--verbose", help="increase output verbosity", action="store_true")

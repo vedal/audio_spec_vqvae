@@ -10,7 +10,6 @@ recon_error: 'bernoulli'
 learning_rate: 0.0002
 beta: 0.25
 cache_dir: False
-#save_tensorboard: False
 save_checkpoints: False
 save_plots: False
 epochs: 100

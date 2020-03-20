@@ -10,7 +10,6 @@ recon_error: 'softmax-CE'
 learning_rate: 0.0002
 beta: 0.25
 cache_dir: '../cache/nsynth'
-#save_tensorboard: True
 save_checkpoints: True
 save_plots: True
 epochs: 246

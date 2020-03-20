@@ -27,21 +27,12 @@ if __name__ == "__main__":
         description="evaluate pretrained model performance on a testset",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "-f",
-        "--file",
-        dest="yaml_path",
-        help="experiment definition file yaml",
-        required=True,
-        type=Path,
-    )
 
     parser.add_argument(
         "--data_dir",
         dest="data_dir",
         help="dir of test audio files",
-        default="../data/nsynth-test-vocal/audio",
-        # test_dir = '../data/my-keyboard-dataset/test'
+        default='../data/my-keyboard-dataset/test',
         type=Path,
     )
 
@@ -49,7 +40,7 @@ if __name__ == "__main__":
         "--checkpoint_dir",
         dest="checkpoint_dir",
         help="model checkpoint directory",
-        default="../results_stored/2019-02-25-keyboard",
+        default="../results/2019-02-25-keyboard",
         #'2019-03-23-sound-latent-size-comparison'
         type=Path,
     )
@@ -63,22 +54,21 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--cache",
-        dest="cache",
-        default=False,
-        action="store_true",
+        "--cache_dir",
+        dest="cache_dir",
         help="Flag to use cache",
     )
+
     parser.add_argument(
         "--debug",
         dest="debug",
+        help="Flag to use small part of dataset",
         default=False,
         action="store_true",
-        help="Flag to use small part of dataset",
     )
 
     args = parser.parse_args()
-
+    print(args.data_dir)
     max_testset_size, max_batch_size = (6, 2) if args.debug else (100000, 16)
     test_size = min(max_testset_size, count_files_in_folder(args.data_dir))
     batch_size = min(max_batch_size, test_size)
@@ -99,9 +89,9 @@ if __name__ == "__main__":
         graph = tf.Graph()
         with graph.as_default():
             dataset = input_fn(
-                str(args.test_dir),
+                str(args.data_dir),
                 is_training=False,
-                cache_dir="../cache" if args.cache else False,
+                cache_dir=args.cache_dir,
                 data_size=test_size,
                 batch_size=batch_size,
             )

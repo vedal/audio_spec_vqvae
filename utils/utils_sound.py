@@ -57,7 +57,7 @@ def sonify(spectrogram,
 
 
 def sonify_transf_2(waveform, apply_l2_norm=True):
-    from src.input_pipeline_nsynth import minmax, transform, transpose_and_crop
+    from input_pipeline_nsynth import minmax, transform, transpose_and_crop
     spectrogram = transform(waveform)
     if not apply_l2_norm:
         spectrogram = minmax(spectrogram)  #[:,:-1] # same as channel_dim_last
@@ -69,7 +69,7 @@ def sonify_transf_2(waveform, apply_l2_norm=True):
 
 def spectrogram_to_waveform(spectrogram, apply_l2_norm=True, maxiter=1000):
     # input reconstructed spectrogram and output a waveform
-    from src.utils import minmax
+    from utils.utils import minmax
     if not apply_l2_norm:
         x = minmax(spectrogram)[..., None]
     else:

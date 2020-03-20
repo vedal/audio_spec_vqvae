@@ -10,7 +10,6 @@ recon_error: 'softmax-CE'
 learning_rate: 0.0002
 beta: 0.25
 cache_dir: null
-#save_tensorboard: False
 save_checkpoints: False
 save_plots: False
 epochs: 2
