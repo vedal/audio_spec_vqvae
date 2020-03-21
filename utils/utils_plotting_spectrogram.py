@@ -9,7 +9,7 @@ def spec_plotter(ax, data, param_dict={}):
     from librosa.display import specshow
 
     try:
-        ax.set_title(param_dict['title'])
+        ax.set_title(param_dict["title"])
     except:
         pass
     ax = specshow(data, ax=ax)
@@ -17,15 +17,15 @@ def spec_plotter(ax, data, param_dict={}):
 
 
 def freq_response_plotter(ax, data1, data2, param_dict={}):
-    # Plot vertical frequency response plot of MSE between two spectrograms. 
+    # Plot vertical frequency response plot of MSE between two spectrograms.
     # Mean is taken over time dimension
     try:
-        ax.set_title(param_dict['title'])
-        del param_dict['title']
+        ax.set_title(param_dict["title"])
+        del param_dict["title"]
     except:
         pass
 
-    mse = np.mean((data1 - data2)**2, axis=1)  # 250
+    mse = np.mean((data1 - data2) ** 2, axis=1)  # 250
     y_max = len(mse)
     y = np.arange(y_max)
 

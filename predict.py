@@ -8,7 +8,7 @@ from input_pipeline_nsynth import input_fn
 
 from utils.utils_sound import save_sound, spectrogram_to_waveform
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = ArgumentParser(
         description="predicts (compress and reconstruct) a new sound clip using a pretrained model",
         formatter_class=ArgumentDefaultsHelpFormatter,
@@ -17,8 +17,8 @@ if __name__ == '__main__':
         "--checkpoint_dir",
         dest="checkpoint_dir",
         default="../results/2019-03-23-sound-latent-size-comparison/trained_further",
-        #default="../results/2019-03-23-sound-latent-size-comparison",
-        #default="../results/2019-02-25-keyboard",
+        # default="../results/2019-03-23-sound-latent-size-comparison",
+        # default="../results/2019-02-25-keyboard",
         help="model checkpoint directory",
         required=False,
         type=Path,
@@ -51,7 +51,9 @@ if __name__ == '__main__':
         required=False,
     )
 
-    parser.add_argument("--verbose", help="increase output verbosity", action="store_true")
+    parser.add_argument(
+        "--verbose", help="increase output verbosity", action="store_true"
+    )
 
     args = parser.parse_args()
 
@@ -63,7 +65,9 @@ if __name__ == '__main__':
     for sounddir in dirs:
 
         with tf.Session(graph=tf.Graph()) as session:
-            dataset = input_fn(str(sounddir), is_training=False, data_size=2, batch_size=1)
+            dataset = input_fn(
+                str(sounddir), is_training=False, data_size=2, batch_size=1
+            )
             next_element = dataset.make_one_shot_iterator().get_next()
             data_norm = session.run(next_element)["images"]
 
