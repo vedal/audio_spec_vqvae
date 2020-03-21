@@ -18,8 +18,8 @@ def flipfunc(im):
 
 if __name__ == "__main__":
 
-    # disable tensorflow logging
-    tf.logging.set_verbosity(tf.logging.WARN)
+    # disable tensorflow FutureWarning
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
     # disable CPU warning
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
         "--data_dir",
         dest="data_dir",
         help="dir of test audio files",
-        default="../data/my-keyboard-dataset/test",
+        default='../data/my-keyboard-dataset/test',
         type=Path,
     )
 
@@ -53,7 +53,11 @@ if __name__ == "__main__":
         type=Path,
     )
 
-    parser.add_argument("--cache_dir", dest="cache_dir", help="Flag to use cache")
+    parser.add_argument(
+        "--cache_dir",
+        dest="cache_dir",
+        help="Flag to use cache",
+    )
 
     parser.add_argument(
         "--debug",

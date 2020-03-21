@@ -13,10 +13,10 @@ For additional details, please see the [report](http://kth.diva-portal.org/smash
 ## Getting started
 ### Install dependencies
 #### Requirements
-- Python 3.6.5
-- tensorflow==1.13.0rc2
-- dm-sonnet==1.27
-- tensorflow-probability==0.5.0
+- Python 3.7
+- tensorflow==1.15.2
+- dm-sonnet==1.36
+- tensorflow-probability==0.8.0
 ```
 pip install -r requirements.txt
 ```

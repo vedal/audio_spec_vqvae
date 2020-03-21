@@ -5,6 +5,7 @@ from time import time
 
 import numpy as np
 import tensorflow as tf
+
 import yaml
 from tqdm import trange
 
@@ -15,6 +16,9 @@ from utils.utils_logging import (get_current_filename,
 
 
 if __name__ == '__main__':
+    # disable tensorflow FutureWarning
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+
     print('starting script')
     last = time()
 
