@@ -1,6 +1,6 @@
 h5py==2.9.0
 tqdm
-tensorflow==1.13.0rc2
+tensorflow==1.15.2
 dm-sonnet==1.27
 numpy==1.15.4
 matplotlib
