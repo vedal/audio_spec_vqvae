@@ -1,6 +1,6 @@
 # Unsupervised Audio Spectrogram Compression using Vector Quantized Autoencoders
 
-| [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) | [sound samples](https://amundv.github.io/thesis-audio-samples/) |
+| [report](http://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1376201&dswid=4801) | [sound samples](https://amundvedal.github.io/thesis-audio-samples/) |
 
 
 ### Overview 
